@@ -10,7 +10,7 @@ class StoreTest(BaseTest):
             with self.app_context():
                 resp = client.post('/store/test')
 
-                expected = {'name': 'test', 'items': []}
+                expected = {'id': 1, 'name': 'test', 'items': []}
                 self.assertEqual(resp.status_code, 201)
                 self.assertIsNotNone(StoreModel.find_by_name('test'))
                 self.assertDictEqual(expected, json.loads(resp.data))
@@ -39,7 +39,7 @@ class StoreTest(BaseTest):
                 StoreModel('test').save_to_db()
                 resp = client.get('/store/test')
 
-                expected = {'name': 'test', 'items': []}
+                expected = {'id': 1, 'name': 'test', 'items': []}
 
                 self.assertEqual(resp.status_code, 200)
                 self.assertDictEqual(expected, json.loads(resp.data))
@@ -59,7 +59,7 @@ class StoreTest(BaseTest):
                 StoreModel('test').save_to_db()
                 ItemModel('test', 19.99, 1).save_to_db()
 
-                expected = {'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]}
+                expected = {'id': 1, 'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]}
                 resp = client.get('/store/test')
 
                 self.assertEqual(resp.status_code, 200)
@@ -71,7 +71,7 @@ class StoreTest(BaseTest):
             with self.app_context():
                 StoreModel('test').save_to_db()
 
-                expected = {'stores': [{'name': 'test', 'items': []}]}
+                expected = {'stores': [{'id': 1, 'name': 'test', 'items': []}]}
                 resp = client.get('/stores')
                 self.assertDictEqual(expected, json.loads(resp.data))
 
@@ -81,6 +81,6 @@ class StoreTest(BaseTest):
                 StoreModel('test').save_to_db()
                 ItemModel('test', 19.99, 1).save_to_db()
 
-                expected = {'stores': [{'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]}]}
+                expected = {'stores': [{'id': 1, 'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]}]}
                 resp = client.get('/stores')
                 self.assertDictEqual(expected, json.loads(resp.data))
